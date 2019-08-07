@@ -29,9 +29,29 @@ li,ul,a,h1,h2,h3,h4,h5,span,label{
   background-color: #2c373b;
   padding: 30px;
   color: azure; 
+  bottom: 39px;
+  position: absolute;
+  width: 100%;
+}
+.bottom-footer
+{
+  background-color: #20282a;
+  padding: 10px;
+  color: azure; 
   bottom: 0;
   position: absolute;
+  width: 100%;
+  font-family: "Vazir" !important;
+  font-size: 11px;
+  font-weight: initial;
+  text-align: center;
 }
+.top-footer a{
+  color: azure !important;
+  text-decoration: none;
+  font-size: 11px;
+}
+
 .mdl-layout__header
 {
   background-color: rgb(255, 255, 255) !important;
@@ -41,4 +61,18 @@ li,ul,a,h1,h2,h3,h4,h5,span,label{
 .mdl-layout__header,a
 {
   color: rgb(51, 48, 48) !important;
+}
+
+.top-menu ul li a
+{
+  display: block;
+  line-height: 23px;
+  padding: 2px 15px 2px 0;
+  color: #fff;
+  font-size: 14px !important;
+  position: relative;
+}
+
+.clearfix{
+  clear: both;
 }

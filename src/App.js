@@ -5,6 +5,7 @@ import TypoGraphy from "@material-ui/core/Typography";
 import Posts from "./posts";
 import { Route, Link, BrowserRouter as Router } from "react-router-dom";
 import {Layout, Header, Navigation,  Drawer, Content} from 'react-mdl';
+import { ThemeProvider } from '@material-ui/styles';
 
 import About from "./About";
 import Contactus from "./Contactus";
