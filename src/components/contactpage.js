@@ -28,19 +28,19 @@ const theme = createMuiTheme({
 });
 
 const subjects = [
-    {
-      value: '1',
-      label: 'پیشنهاد',
-    },
-    {
-      value: '2',
-      label: 'انتقاد',
-    },
-    {
-      value: '3',
-      label: 'سایر',
-    }
-  ];
+  {
+    value: "1",
+    label: "پیشنهاد"
+  },
+  {
+    value: "2",
+    label: "انتقاد"
+  },
+  {
+    value: "3",
+    label: "سایر"
+  }
+];
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -111,40 +111,7 @@ export default function Contact() {
                     }}
                   />
 
-<TextField
-                    id="outlined-multiline-flexible"
-                    label="پیام شما"
-                    multiline
-                    rowsMax="4"
-                    onChange={handleChange("multiline")}
-                    className={classes.textField}
-                    margin="normal"
-                    variant="outlined"
-                  />
-
-<TextField
-                    id="outlined-multiline-flexible"
-                    label="پیام شما"
-                    multiline
-                    rowsMax="4"
-                    onChange={handleChange("multiline")}
-                    className={classes.textField}
-                    margin="normal"
-                    variant="outlined"
-                  />
-
-<TextField
-                    id="outlined-multiline-flexible"
-                    label="پیام شما"
-                    multiline
-                    rowsMax="4"
-                    onChange={handleChange("multiline")}
-                    className={classes.textField}
-                    margin="normal"
-                    variant="outlined"
-                  />
-
-<TextField
+                  <TextField
                     id="outlined-multiline-flexible"
                     label="پیام شما"
                     multiline
@@ -177,7 +144,6 @@ export default function Contact() {
                       </MenuItem>
                     ))}
                   </TextField>
-
                 </FormControl>
 
                 <div style={{ textAlign: "right" }}>
@@ -200,11 +166,10 @@ export default function Contact() {
               />
             </Grid>
           </Grid>
-          <div class="clearfix"></div>
+          <div className="clearfix" />
         </div>
       </ThemeProvider>
-      <div class="clearfix"></div>
+      <div className="clearfix" />
     </StylesProvider>
-    
   );
 }
