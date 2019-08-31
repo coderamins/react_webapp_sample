@@ -18,7 +18,7 @@ import FavoriteIcon from "@material-ui/icons/Favorite";
 import ShareIcon from "@material-ui/icons/Share";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
-import axios from 'axios';
+import axios from "axios";
 
 import { Cell, CardText, Button, CardMenu, CardTitle } from "react-mdl";
 
@@ -32,7 +32,7 @@ const useStyles = makeStyles(theme => ({
     maxWidth: 345
   },
   media: {
-    height: 0, 
+    height: 0,
     paddingTop: "56.25%" // 16:9
   },
   expand: {
@@ -50,33 +50,27 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default class PersonList extends React.Component {
-
+class Home extends Component {
   state = {
     persons: []
-  }
+  };
 
   componentDidMount() {
-    axios.get('https://jsonplaceholder.typicode.com/users')
-      .then(res => {
-        const persons = res.data;
-        this.setState({ persons });
-      })
+    axios.get("https://jsonplaceholder.typicode.com/users").then(res => {
+      const persons = res.data;
+      this.setState({ persons });
+    });
   }
 
   render() {
-    const classes = useStyles();
-    return (
-      <div className={classes.root}>
-      <ul>
-        { this.state.persons.map(person => <li>{person.name}</li>)}
-      </ul>
-      </div>
-    )
+    const greeting = "Welcome to React";
+    return <HomContents />;
   }
 }
+export default Home;
 
-/*export function Home() {
+
+function HomContents() {
   const classes = useStyles();
   const [expanded, setExpanded] = React.useState(false);
 
@@ -87,7 +81,7 @@ export default class PersonList extends React.Component {
   return (
     <div className={classes.root}>
       <Grid container justify="center">
-        <Header
+        <Header xs={12} 
           className="section-heading"
           title={<h2>آخرین دوره های کافه کد</h2>}
           scroll
@@ -430,6 +424,3 @@ export default class PersonList extends React.Component {
     </div>
   );
 }
-
-export default Home;
-*/
