@@ -56,7 +56,7 @@ class Home extends Component {
   };
 
   componentDidMount() {
-    axios.get("https://jsonplaceholder.typicode.com/users").then(res => {
+    axios.get("http://localhost:3662/api/tutorials/GetLatestTutorials").then(res => {
       const persons = res.data;
       this.setState({ persons });
     });
