@@ -44,7 +44,7 @@ class Footer extends Component {
           </div>
         </div>
 
-        <div class="bottom-footer">
+        <div className="bottom-footer">
           تمامی حقوق ان سایت محفوظ و مربوط به لرن لند می باشد و هرگونه کپی
           برداری و انتشار غیر مجاز پیگرد قانونی دارد .
         </div>

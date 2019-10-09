@@ -5,6 +5,7 @@ import Home from './pages/Home/index';
 import Tutorials from './tutorialspage';
 import About from './aboutpage';
 import Contact from './contactpage';
+import LoginPage from "../components/pages/LoginPage/LoginPage";
 
 const Main =() =>(
     <Switch>
@@ -13,6 +14,7 @@ const Main =() =>(
         <Route path="/tutorials" component={Tutorials} />
         <Route path="/about" component={About} />
         <Route path="/contact" component={Contact} />
+        <Route exact path="/Login" component={LoginPage} />
     </Switch>
 )
 
