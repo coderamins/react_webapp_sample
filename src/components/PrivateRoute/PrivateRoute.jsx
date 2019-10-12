@@ -1,19 +1,18 @@
-import React, { Component } from 'react';
-import {Route,Redirect} from 'react-router-dom';
+import React from 'react';
+import { Route, Redirect } from 'react-router-dom';
+import { isLogin } from '../../utils';
 
-import {authenticationService} from '@/_services';
+const PrivateRoute = ({component: Component, ...rest}) => {
+    return (
 
-export const PrivateRoute=({component:Component,roles,...rest})=>(
-    <Route {...rest} render={props =>{
-        const currentUser=authenticationService.currentUserValue;
-        if(!currentUser){
-            return <Redirect to={{pathname:'/login',state:{from:props.location}}}/>
-        }
+        // Show the component only when the user is logged in
+        // Otherwise, redirect the user to /signin page
+        <Route {...rest} render={props => (
+            isLogin() ?
+                <Component {...props} />
+            : <Redirect to="/login" />
+        )} />
+    );
+};
 
-        if(roles && roles.indexOf(currentUser.role) === -1){
-            return <Redirect to={{pathname:'/'}}/>
-        }
-        
-        return <Component {...props}/>
-    }}/>    
-)
+export default PrivateRoute;

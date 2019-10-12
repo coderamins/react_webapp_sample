@@ -4,7 +4,7 @@ import { Layout, Header, Navigation, Drawer, Content } from "react-mdl";
 
 import Main from "./components/main";
 import logo from "./";
-import Footer from "./footer";
+import Footer from "./components/footer/footer";
 
 class App extends Component {
   render() {

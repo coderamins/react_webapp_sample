@@ -1,4 +1,17 @@
-import React from "react";
+//        =================  ============             ____
+//        ================= |  ---------||           //  \\
+//              ||||        | |         ||          //    \\           /
+//              ||||        | |        //          //      \\        /
+//              ||||        | |       //          //--------\\     /
+//              ||||        | |      //          //----------\\   /
+//              ||||        | |     ||          //            \\  |
+//              ||||        | |      \\        //              \\ \
+//              ||||        | |       \\      //                \\ \
+//              ||||        | |        \\    //                  \\  \
+//              ||||        | |         \\  //                    \\   \
+//              ||||        | |          \\//                      \\    \
+
+import React, { useState } from 'react';
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -13,9 +26,12 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles, createMuiTheme } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 
+//import validateInput from '../validators/login';
+import { loginUser } from "../../store/actions/auth";
+
 import { create } from "jss";
 import rtl from "jss-rtl";
-import { StylesProvider, jssPreset,ThemeProvider } from "@material-ui/styles";
+import { StylesProvider, jssPreset, ThemeProvider } from "@material-ui/styles";
 
 const jss = create({ plugins: [...jssPreset().plugins, rtl()] });
 
@@ -31,6 +47,40 @@ function Copyright() {
     </Typography>
   );
 }
+
+const methods = {
+  componentDidMount() {
+    if (this.props.user.isAuthenticated) {
+      this.props.history.push("/");
+    }
+  },
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.user && nextProps.user.isAuthenticated) {
+      this.props.history.push("/");
+    }
+    if (nextProps.errors) {
+      this.setState({
+        errors: nextProps.errors,
+        isLoading: false
+      });
+    }
+  },
+
+  onSubmit :(e) => {
+    alert('fsf');
+    e.preventDefault();
+    //if (this.isValid()) {
+      //this.setState({ errors: {}, isLoading: true });
+      loginUser(this.state, this.props.history);
+    //}
+  },
+  
+  onChange : (e) => {
+    this.setState({ [e.target.name]: e.target.value });
+  }
+
+};
 
 const theme = createMuiTheme({
   direction: "rtl" // Both here and <body dir="rtl">
@@ -63,6 +113,10 @@ const useStyles = makeStyles(theme => ({
 
 export default function LoginPage() {
   const classes = useStyles();
+  const method = methods;
+  const [email, password,errors:{},isLoading] = useState(
+    'Hello Function Component!'
+  );
 
   return (
     <Container component="main" maxWidth="xs" dir="rtl">
@@ -105,11 +159,12 @@ export default function LoginPage() {
                 label="منو بخاطر بسپار"
               />
               <Button
-                type="submit"
+                type="button"
                 fullWidth
                 variant="contained"
                 color="primary"
                 className={classes.submit}
+                onClick={methods.onSubmit}
               >
                 ورود
               </Button>
