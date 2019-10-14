@@ -141,3 +141,8 @@ a {
 .clientarea > a:hover{
   color: darkblue;
 }
+
+.mdl-layout__content {
+  padding-top: 20px !important;
+  padding-bottom: 20px !important;
+}

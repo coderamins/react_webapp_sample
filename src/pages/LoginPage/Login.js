@@ -10,76 +10,18 @@ import Grid from "@material-ui/core/Grid";
 import Box from "@material-ui/core/Box";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
-import { makeStyles, createMuiTheme,withStyles } from "@material-ui/core/styles";
+import { makeStyles, createMuiTheme } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 
-//import validateInput from '../validators/login';
+import { Redirect } from "react-router-dom";
+import { connect } from "react-redux";
+import { loginUserAction } from "../actions/authenticationActions";
+import { setCookie } from "../utils/cookies";
 import { loginUser } from "../../store/actions/auth";
 
 import { create } from "jss";
 import rtl from "jss-rtl";
 import { StylesProvider, jssPreset, ThemeProvider } from "@material-ui/styles";
-
-import { Redirect } from "react-router-dom";
-import { connect } from "react-redux";
-
-import { loginUserAction } from "../../_services/authenticationService";
-import { setCookie } from "../../utils/cookies";
-
-
-const useStyles = makeStyles(theme => ({
-  "@global": {
-    body: {
-      backgroundColor: theme.palette.common.white
-    }
-  },
-  paper: {
-    marginTop: theme.spacing(8),
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center"
-  },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main
-  },
-  form: {
-    width: "100%", // Fix IE 11 issue.
-    marginTop: theme.spacing(1)
-  },
-  submit: {
-    margin: theme.spacing(3, 0, 2)
-  }
-}));
-
-const styles = theme => ({
-
-  '@global': {
-      body: {
-          //backgroundColor: theme.palette.common.white,
-      },
-  },
-  paper: {
-      marginTop: theme.spacing(8),
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-  },
-  avatar: {
-      margin: theme.spacing(1),
-      backgroundColor: theme.palette.secondary.main,
-  },
-  form: {
-      width: '100%', // Fix IE 11 issue.
-      marginTop: theme.spacing(1),
-      backgroundColor: theme.palette.common.white,
-      padding:theme.spacing(3),
-      marginBottom: theme.spacing(8),
-  },
-  submit: {
-      margin: theme.spacing(3, 0, 2),
-  },
-});
 
 class LoginPage extends Component {
   onHandleLogin = event => {
@@ -101,7 +43,6 @@ class LoginPage extends Component {
   }
 
   render() {
-    const { classes } = this.props;
     let isSuccess, message;
 
     if (this.props.response.login.hasOwnProperty("response")) {
@@ -118,14 +59,14 @@ class LoginPage extends Component {
         <CssBaseline />
         <StylesProvider jss={jss}>
           <ThemeProvider theme={theme}>
-            <div className={classes.paper} dir="rtl">
-              <Avatar className={classes.avatar}>
+            <div dir="rtl">
+              <Avatar>
                 <LockOutlinedIcon />
               </Avatar>
               <Typography component="h1" variant="h5">
                 ورود به صفحه کاربری
               </Typography>
-              <form noValidate className={classes.form} onSubmit={LoginPage.onHandleLogin}>
+              <form noValidate onSubmit={LoginPage.onHandleLogin}>
                 {!isSuccess ? (
                   <div>{message}</div>
                 ) : (
@@ -163,7 +104,6 @@ class LoginPage extends Component {
                   fullWidth
                   variant="contained"
                   color="primary"
-                  className={classes.submit}
                 >
                   ورود
                 </Button>
@@ -194,7 +134,4 @@ const theme = createMuiTheme({
 const jss = create({ plugins: [...jssPreset().plugins, rtl()] });
 const mapStateToProps = response => ({ response });
 
-//export default connect(mapStateToProps)(LoginPage);
-//export default withStyles(styles)(LoginPage);
-export default connect(mapStateToProps)(withStyles(styles)(LoginPage))
-
+export default connect(mapStateToProps)(LoginPage);

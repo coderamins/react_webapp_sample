@@ -6,11 +6,18 @@ import * as serviceWorker from "./serviceWorker";
 import "react-mdl/extra/material.css";
 import "react-mdl/extra/material.js";
 import {BrowserRouter} from "react-router-dom";
+import { Provider } from 'react-redux';
+import configureStore from './store/configureStore';
+
+const store = configureStore();
 
 ReactDOM.render(
-  <BrowserRouter>
+  /*<BrowserRouter>
     <App />
-  </BrowserRouter>,
+  </BrowserRouter>,*/
+  <Provider store={store}>
+    <App />
+  </Provider>,
   document.getElementById("root")
 );
 
