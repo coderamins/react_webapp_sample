@@ -10,22 +10,20 @@ import Grid from "@material-ui/core/Grid";
 import Box from "@material-ui/core/Box";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
-import { makeStyles, createMuiTheme,withStyles } from "@material-ui/core/styles";
+import {
+  makeStyles,
+  createMuiTheme,
+  withStyles
+} from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
-
-//import validateInput from '../validators/login';
-import { loginUser } from "../../store/actions/auth";
 
 import { create } from "jss";
 import rtl from "jss-rtl";
 import { StylesProvider, jssPreset, ThemeProvider } from "@material-ui/styles";
-
 import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
-
-import { loginUserAction } from "../../_services/authenticationService";
 import { setCookie } from "../../utils/cookies";
-
+import { submitLogin } from "../../actions/authActions";
 
 const useStyles = makeStyles(theme => ({
   "@global": {
@@ -53,65 +51,59 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const styles = theme => ({
-
-  '@global': {
-      body: {
-          //backgroundColor: theme.palette.common.white,
-      },
+  "@global": {
+    body: {
+      //backgroundColor: theme.palette.common.white,
+    }
   },
   paper: {
-      marginTop: theme.spacing(8),
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
+    marginTop: theme.spacing(8),
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center"
   },
   avatar: {
-      margin: theme.spacing(1),
-      backgroundColor: theme.palette.secondary.main,
+    margin: theme.spacing(1),
+    backgroundColor: theme.palette.secondary.main
   },
   form: {
-      width: '100%', // Fix IE 11 issue.
-      marginTop: theme.spacing(1),
-      backgroundColor: theme.palette.common.white,
-      padding:theme.spacing(3),
-      marginBottom: theme.spacing(8),
+    width: "100%", // Fix IE 11 issue.
+    marginTop: theme.spacing(1),
+    backgroundColor: theme.palette.common.white,
+    padding: theme.spacing(3),
+    marginBottom: theme.spacing(8)
   },
   submit: {
-      margin: theme.spacing(3, 0, 2),
-  },
+    margin: theme.spacing(3, 0, 2)
+  }
 });
 
 class LoginPage extends Component {
-  onHandleLogin = event => {
-    event.preventDefault();
+  constructor() {
+    super();
 
-    let email = event.target.email.value;
-    let password = event.target.password.value;
+    this.state = {
+      details: {
 
-    const data = {
-      email,
-      password
+      }
     };
+  }
 
-    this.props.dispatch(loginUserAction(data));
-  };
+  updateDetails(event) {
+    let updateDetails = Object.assign({}, this.state.details);
 
-  componentDidMount() {
-    document.title = "React Login";
+    updateDetails[event.target.id] = event.target.value;
+    this.setState({
+      details: updateDetails
+    });
+  }
+
+  login() {
+    this.props.dispatch(submitLogin(this.state.details));
   }
 
   render() {
     const { classes } = this.props;
-    let isSuccess, message;
-
-    if (this.props.response.login.hasOwnProperty("response")) {
-      isSuccess = this.props.response.login.response.success;
-      message = this.props.response.login.response.message;
-
-      if (isSuccess) {
-        setCookie("token", this.props.response.login.response.token, 1);
-      }
-    }
 
     return (
       <Container component="main" maxWidth="xs" dir="rtl">
@@ -125,19 +117,15 @@ class LoginPage extends Component {
               <Typography component="h1" variant="h5">
                 ورود به صفحه کاربری
               </Typography>
-              <form noValidate className={classes.form} onSubmit={LoginPage.onHandleLogin}>
-                {!isSuccess ? (
-                  <div>{message}</div>
-                ) : (
-                  <Redirect to="dashboard" />
-                )}
+              <form noValidate className={classes.form}>
                 <TextField
                   dir="rtl"
+                  onChange={this.updateDetails.bind(this)}
+                  id="username"
                   variant="outlined"
                   margin="normal"
                   required
                   fullWidth
-                  id="email"
                   label="ایمیل"
                   name="email"
                   autoComplete="email"
@@ -151,6 +139,7 @@ class LoginPage extends Component {
                   name="password"
                   label="کلمه عبور"
                   type="password"
+                  onChange={this.updateDetails.bind(this)}
                   id="password"
                   autoComplete="current-password"
                 />
@@ -159,6 +148,7 @@ class LoginPage extends Component {
                   label="منو بخاطر بسپار"
                 />
                 <Button
+                  onClick={this.login.bind(this)}
                   type="button"
                   fullWidth
                   variant="contained"
@@ -192,9 +182,8 @@ const theme = createMuiTheme({
   direction: "rtl" // Both here and <body dir="rtl">
 });
 const jss = create({ plugins: [...jssPreset().plugins, rtl()] });
-const mapStateToProps = response => ({ response });
+const mapStateToProps = state => {
+  return {};
+};
 
-//export default connect(mapStateToProps)(LoginPage);
-//export default withStyles(styles)(LoginPage);
-export default connect(mapStateToProps)(withStyles(styles)(LoginPage))
-
+export default connect(mapStateToProps)(withStyles(styles)(LoginPage));
