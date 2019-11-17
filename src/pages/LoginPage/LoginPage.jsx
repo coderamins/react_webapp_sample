@@ -24,6 +24,7 @@ import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import { setCookie } from "../../utils/cookies";
 import { submitLogin } from "../../actions/authActions";
+import { login } from '../../apis/sessions';
 
 const useStyles = makeStyles(theme => ({
   "@global": {
@@ -79,28 +80,34 @@ const styles = theme => ({
 });
 
 class LoginPage extends Component {
-  constructor() {
-    super();
-
+  constructor(props) {
+    super(props);
     this.state = {
-      details: {
-
-      }
+      username: "",
+      password: ""
     };
   }
 
-  updateDetails(event) {
-    let updateDetails = Object.assign({}, this.state.details);
-
-    updateDetails[event.target.id] = event.target.value;
+  updateUser = e => {
+    //console.log(e.target.value);
     this.setState({
-      details: updateDetails
+      username: e.target.value
     });
-  }
+  };
 
-  login() {
-    this.props.dispatch(submitLogin(this.state.details));
-  }
+  updatePass = e => {
+    //console.log(e.target.value);
+    this.setState({
+      password: e.target.value
+    });
+  };
+
+  handleSubmit = e => {
+    e.preventDefault();
+    this.props.onLogin(this.props, () => {
+      window.location("/dash");
+    });
+  };
 
   render() {
     const { classes } = this.props;
@@ -117,10 +124,11 @@ class LoginPage extends Component {
               <Typography component="h1" variant="h5">
                 ورود به صفحه کاربری
               </Typography>
-              <form noValidate className={classes.form}>
+              <form noValidate onSubmit={(e)=>this.handleSubmit(e)} className={classes.form}>
                 <TextField
                   dir="rtl"
-                  onChange={this.updateDetails.bind(this)}
+                  //onChange={this.updateDetails.bind(this)}
+                  onChange={this.updateUser}
                   id="username"
                   variant="outlined"
                   margin="normal"
@@ -139,7 +147,8 @@ class LoginPage extends Component {
                   name="password"
                   label="کلمه عبور"
                   type="password"
-                  onChange={this.updateDetails.bind(this)}
+                  onChange={this.updatePass}
+                  //updatePass={this.updatePass}
                   id="password"
                   autoComplete="current-password"
                 />
@@ -148,8 +157,8 @@ class LoginPage extends Component {
                   label="منو بخاطر بسپار"
                 />
                 <Button
-                  onClick={this.login.bind(this)}
-                  type="button"
+                  //onClick={this.login.bind(this)}
+                  type="submit"
                   fullWidth
                   variant="contained"
                   color="primary"
@@ -182,8 +191,25 @@ const theme = createMuiTheme({
   direction: "rtl" // Both here and <body dir="rtl">
 });
 const jss = create({ plugins: [...jssPreset().plugins, rtl()] });
-const mapStateToProps = state => {
-  return {};
-};
+//const mapStateToProps = state => {
+//  return {};
+//};
 
-export default connect(mapStateToProps)(withStyles(styles)(LoginPage));
+const mapStateToProps = (state, ownProps) => {
+  return {
+      isLoggedIn: state.session.isLoggedIn,
+      session: state.session,
+      error: state.error,
+  };
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+      onLogin: (userData, cb) => { dispatch(login(userData, cb)); },
+  }
+}
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(LoginPage));
+
+//export default connect(mapStateToProps)(withStyles(styles)(LoginPage));

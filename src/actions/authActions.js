@@ -21,8 +21,8 @@ function logout(){
 }
 
 export function submitLogin(data){
-    return dispatch => {
-        return fetch(`/user/${data.username}`, { 
+    //return dispatch => {
+        return fetch(`/login`, { 
                 method: 'POST', 
                  headers: {
                     'Accept': 'application/json',
@@ -40,10 +40,10 @@ export function submitLogin(data){
                 localStorage.setItem('username', data.data.username);
                 localStorage.setItem('token', data.data.tokenID);
 
-                dispatch(userLoggedIn(data.data.username));
+                //dispatch(userLoggedIn(data.data.username));
             })        
             .catch( (e) => console.log(e) );
-    }    
+    //}    
 }
 
 export function submitRegister(data){

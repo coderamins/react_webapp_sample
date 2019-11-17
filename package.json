@@ -16,7 +16,9 @@
     "react-router-dom": "^5.0.1",
     "react-scripts": "3.0.1",
     "redux": "^4.0.4",
+    "redux-devtools-extension": "^2.13.8",
     "redux-saga": "^1.1.1",
+    "redux-thunk": "^2.3.0",
     "vazir-font": "^20.1.0"
   },
   "scripts": {
@@ -25,7 +27,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
-  "proxy": "http://localhost:5000",
+  "proxy": "http://localhost:31889",
   "eslintConfig": {
     "extends": "react-app"
   },
