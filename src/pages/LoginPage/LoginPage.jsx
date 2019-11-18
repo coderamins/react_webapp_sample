@@ -24,7 +24,7 @@ import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import { setCookie } from "../../utils/cookies";
 import { submitLogin } from "../../actions/authActions";
-import { login } from '../../apis/sessions';
+import { login } from "../../apis/sessions";
 
 const useStyles = makeStyles(theme => ({
   "@global": {
@@ -104,7 +104,7 @@ class LoginPage extends Component {
 
   handleSubmit = e => {
     e.preventDefault();
-    this.props.onLogin(this.props, () => {
+    this.props.onLogin(this.state, () => {
       window.location("/dash");
     });
   };
@@ -124,11 +124,11 @@ class LoginPage extends Component {
               <Typography component="h1" variant="h5">
                 ورود به صفحه کاربری
               </Typography>
-              <form noValidate onSubmit={(e)=>this.handleSubmit(e)} className={classes.form}>
+              <form noValidate onSubmit={e => this.handleSubmit(e)} className={classes.form}>
                 <TextField
                   dir="rtl"
-                  //onChange={this.updateDetails.bind(this)}
-                  onChange={this.updateUser}
+                  onChange={e => { this.updateUser(e); }}
+                  //onChange={this.updateUser}
                   id="username"
                   variant="outlined"
                   margin="normal"
@@ -197,18 +197,19 @@ const jss = create({ plugins: [...jssPreset().plugins, rtl()] });
 
 const mapStateToProps = (state, ownProps) => {
   return {
-      isLoggedIn: state.session.isLoggedIn,
-      session: state.session,
-      error: state.error,
+    isLoggedIn: state.session.isLoggedIn,
+    session: state.session,
+    error: state.error
   };
-}
+};
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
   return {
-      onLogin: (userData, cb) => { dispatch(login(userData, cb)); },
-  }
-}
-
+    onLogin: (userData, cb) => {
+      dispatch(login(userData, cb));
+    }
+  };
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(LoginPage));
 

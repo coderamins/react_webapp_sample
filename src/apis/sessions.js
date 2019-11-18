@@ -1,63 +1,71 @@
-import { loginSuccess, loginError } from '../actions/sessions';
-import { registerSuccess, registerError } from '../actions/register';
+import { loginSuccess, loginError } from "../actions/sessions";
+import { registerSuccess, registerError } from "../actions/register";
 import { parseJSON } from "./utils";
-import {API} from './CONFIG';
+import { API } from "./CONFIG";
 
 export function login(userData, cb) {
-    console.log(userData);
-    return dispatch =>
-        fetch(API.BASE + '/login', {
-            method: "POST",
-            //mode: "cors",
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-                "grant_type": 'password',
-                'access-control-allow-credentials':true,
-            },
-            body: JSON.stringify({
-                "username": userData.username,
-                "grant_type": 'password',
-                "password": userData.password,
-            }),
-        }).then(response => {
-            alert(response);
-            //console.log(response);
-            //debugger;
-            if (response.ok) {
-                const object = Object.assign(userData, { isLoggedIn: parseJSON(response) });
-                dispatch(loginSuccess(object));
-                cb();
-                //console.log('ran callback function');
-            }
-        })
-            .catch(error => {                
-                console.log('request failed', error);
-                dispatch(loginError(error));
-            })
-        ;
+  console.log(userData);
+  var model={username: userData.username, grant_type: "password", password: userData.password };
+  return dispatch =>
+    fetch(API.BASE + "/login", {
+      method: "POST",
+      mode: "cors",
+      headers: {
+        Accept: "application/json",
+        //"Content-Type": "application/json"
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      data: {username:'' , grant_type: "password", password: '' }
+    })
+      .then(response => {
+        //console.log(response);
+        //debugger;
+        if (response.ok) {
+          const object = Object.assign(userData, {
+            isLoggedIn: parseJSON(response)
+          });
+          dispatch(loginSuccess(object));
+          cb();
+          //console.log('ran callback function');
+        }
+      })
+      .catch(error => {
+        alert(error);
+        console.log("request failed", error);
+        dispatch(loginError(error));
+      });
 }
 
-
-export function signup(userData){
-    return dispatch =>
-        fetch(API.BASE + '?email='+ userData.email + '&password=' + userData.password + '&fullname=' + userData.name, {
-            method: 'post',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-            },
-        }).then(response => {
-            console.log(response);
-            if (response.status >= 200 && response.status < 300 && response.ok) {
-                dispatch(registerSuccess(userData));
-            } else {
-                const error = new Error(response.statusText);
-                error.response = response;
-                dispatch(loginError(error));
-                throw error;
-            }
-        })
-            .catch(error => { console.log('request failed', error); });
+export function signup(userData) {
+  return dispatch =>
+    fetch(
+      API.BASE +
+        "?email=" +
+        userData.email +
+        "&password=" +
+        userData.password +
+        "&fullname=" +
+        userData.name,
+      {
+        method: "post",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json"
+        }
+      }
+    )
+      .then(response => {
+        console.log(response);
+        if (response.status >= 200 && response.status < 300 && response.ok) {
+          dispatch(registerSuccess(userData));
+        } else {
+          const error = new Error(response.statusText);
+          error.response = response;
+          dispatch(loginError(error));
+          throw error;
+        }
+      })
+      .catch(error => {
+        console.log("request failed", error);
+      });
 }
-
