@@ -48,28 +48,17 @@ class SignUpPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      username: "",
-      password: ""
+      firstName: "fds",
+      lastName: "gfdg",
+      email:"ads",
+      password:"sss",
+      confirmpassword:"sss"
     };
   }
 
-  updateUser = e => {
-    //console.log(e.target.value);
-    this.setState({
-      username: e.target.value
-    });
-  };
-
-  updatePass = e => {
-    //console.log(e.target.value);
-    this.setState({
-      password: e.target.value
-    });
-  };
-
   handleSubmit = e => {
     e.preventDefault();
-    this.props.onLogin(this.state, () => {
+    this.props.onSubmit(this.state, () => {
       window.location("/dash");
     });
   };
@@ -91,17 +80,19 @@ class SignUpPage extends Component {
               </Typography>
               <form className={classes.form} noValidate>
                 <Grid container spacing={2}>
-                  <Grid item xs={12} sm={6}>
+                  <Grid item xs={12} sm={6}>                    
                     <TextField
-                      autoComplete="fname"
-                      name="firstName"
                       variant="outlined"
+                      margin="normal"
                       required
                       fullWidth
-                      id="firstName"
+                      name="firstName"
                       label="نام"
-                      autoFocus
+                      type="firstName"
+                      onChange= {(event,newValue) => this.setState({firstName:newValue})}
+                      id="firstName"
                     />
+                    
                   </Grid>
                   <Grid item xs={12} sm={6}>
                     <TextField
@@ -112,6 +103,7 @@ class SignUpPage extends Component {
                       label="نام خانوادگی"
                       name="lastName"
                       autoComplete="lname"
+                      onChange = {(event,newValue) => this.setState({lastName:newValue})}
                     />
                   </Grid>
                   <Grid item xs={12}>
@@ -123,6 +115,7 @@ class SignUpPage extends Component {
                       label="آدرس ایمیل"
                       name="email"
                       autoComplete="email"
+                      onChange = {(event,newValue) => this.setState({email:newValue})}
                     />
                   </Grid>
                   <Grid item xs={12}>
@@ -135,6 +128,7 @@ class SignUpPage extends Component {
                       type="password"
                       id="password"
                       autoComplete="current-password"
+                      onChange = {(event,newValue) => this.setState({password:newValue})}
                     />
                   </Grid>
                   <Grid item xs={12}>
@@ -146,6 +140,7 @@ class SignUpPage extends Component {
                       label="تکرار کلمه عبور"
                       type="password"
                       id="confirmpassword"
+                      onChange = {(event,newValue) => this.setState({confirmpassword:newValue})}
                     />
                   </Grid>
                   <Grid item xs={12}>
@@ -158,11 +153,12 @@ class SignUpPage extends Component {
                   </Grid>
                 </Grid>
                 <Button
-                  type="submit"
+                  //type="submit"
                   fullWidth
                   variant="contained"
                   color="primary"
                   className={classes.submit}
+                  onClick={(event) => this.handleSubmit(event)}
                 >
                   ثبت نام
                 </Button>
@@ -196,7 +192,7 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    onLogin: (userData, cb) => {
+    onSubmit: (userData, cb) => {
       dispatch(signup(userData, cb));
     }
   };

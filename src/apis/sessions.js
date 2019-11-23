@@ -35,6 +35,7 @@ export function login(userData, cb) {
 }
 
 export function signup(userData) {
+  alert(userData.firstName);
   return dispatch =>
     fetch(
       API.BASE + "/api/user/register",
@@ -45,11 +46,13 @@ export function signup(userData) {
         //"&fullname=" +
         //userData.name,
       {
-        method: "post",
+        method: "POST",
+        mode: "no-cors",
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json"
-        }
+        },
+        body:JSON.stringify(userData)
       }
     )
       .then(response => {
