@@ -10,11 +10,7 @@ import Grid from "@material-ui/core/Grid";
 import Box from "@material-ui/core/Box";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
-import {
-  makeStyles,
-  createMuiTheme,
-  withStyles
-} from "@material-ui/core/styles";
+import { makeStyles, createMuiTheme, withStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 
 import { create } from "jss";
@@ -191,10 +187,6 @@ const theme = createMuiTheme({
   direction: "rtl" // Both here and <body dir="rtl">
 });
 const jss = create({ plugins: [...jssPreset().plugins, rtl()] });
-//const mapStateToProps = state => {
-//  return {};
-//};
-
 const mapStateToProps = (state, ownProps) => {
   return {
     isLoggedIn: state.session.isLoggedIn,

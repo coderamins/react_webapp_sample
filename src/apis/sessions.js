@@ -5,17 +5,15 @@ import { API } from "./CONFIG";
 
 export function login(userData, cb) {
   console.log(userData);
-  var model={username: userData.username, grant_type: "password", password: userData.password };
   return dispatch =>
-    fetch(API.BASE + "/login", {
+    fetch(API.BASE + "/oauth2/token", {
       method: "POST",
-      mode: "cors",
+      mode: "no-cors",
       headers: {
-        Accept: "application/json",
-        //"Content-Type": "application/json"
-        "Content-Type": "application/x-www-form-urlencoded",
+        "Content-Type": "application/json",
+        Accept: "application/json"
       },
-      data: {username:'' , grant_type: "password", password: '' }
+      body: `grant_type=password&=username=${userData.username}&password=${userData.password}`
     })
       .then(response => {
         //console.log(response);
@@ -39,13 +37,13 @@ export function login(userData, cb) {
 export function signup(userData) {
   return dispatch =>
     fetch(
-      API.BASE +
-        "?email=" +
-        userData.email +
-        "&password=" +
-        userData.password +
-        "&fullname=" +
-        userData.name,
+      API.BASE + "/api/user/register",
+        //"?email=" +
+        //userData.email +
+        //"&password=" +
+        //userData.password +
+        //"&fullname=" +
+        //userData.name,
       {
         method: "post",
         headers: {
@@ -57,7 +55,9 @@ export function signup(userData) {
       .then(response => {
         console.log(response);
         if (response.status >= 200 && response.status < 300 && response.ok) {
-          dispatch(registerSuccess(userData));
+          //dispatch(registerSuccess(userData));
+          alert('ایمیلی برای شما به آدرس '+userData.Email+' فرستاده شد. برای ورود روی لینک '+
+          'فعال سازی کلیک کنید یا کد فعال سازی را در فرم زیر وارد کنید. ویرایش ایمیل');
         } else {
           const error = new Error(response.statusText);
           error.response = response;

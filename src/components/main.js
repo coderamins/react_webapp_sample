@@ -6,6 +6,7 @@ import Tutorials from '../pages/tutorialspage';
 import About from '../pages/About';
 import Contact from '../pages/Contactus'
 import LoginPage from "../pages/LoginPage/LoginPage";
+import SignUpPage from "../pages/SignUpPage/SignUpPage";
 import PrivateRoute from "../components/PrivateRoute/PrivateRoute";
 
 const Main =() =>(
@@ -15,6 +16,7 @@ const Main =() =>(
         <PrivateRoute path="/tutorials" component={Tutorials} />
         <PrivateRoute path="/about" component={About} />
         <PrivateRoute path="/contact" component={Contact} />
+        <Route exact path="/signup" component={SignUpPage} />
         <Route exact path="/Login" component={LoginPage} />
     </Switch>
 )

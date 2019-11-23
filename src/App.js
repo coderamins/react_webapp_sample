@@ -39,10 +39,11 @@ class App extends Component {
 
               <Content>
                 <div className="page-content" />
-                <Main />
-                <Footer />
+                <Main />                
               </Content>
-            </Layout>
+
+              <Footer />
+            </Layout>           
           </div>
         </Router>
       </Provider>
