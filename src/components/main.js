@@ -6,7 +6,7 @@ import Tutorials from '../pages/tutorialspage';
 import About from '../pages/About';
 import Contact from '../pages/Contactus'
 import LoginPage from "../pages/LoginPage/LoginPage";
-import SignUpPage from "../pages/SignUpPage/SignUpPage";
+import SignUpPage from "../pages/SignUpPage/SignUpPage.jsx";
 import PrivateRoute from "../components/PrivateRoute/PrivateRoute";
 
 const Main =() =>(

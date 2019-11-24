@@ -56,9 +56,15 @@ class SignUpPage extends Component {
     };
   }
 
+  changeFirstName = e => { this.setState({ firstName: e.target.value }); };
+  changeLastName = e => { this.setState({ lastName: e.target.value }); };
+  changeEmail = e => { this.setState({ email: e.target.value }); };
+  changePassword = e => { this.setState({ password: e.target.value }); };
+  changeConfirmPassword = e => { this.setState({ confirmpassword: e.target.value }); };
+
   handleSubmit = e => {
     e.preventDefault();
-    this.props.onSubmit(this.state, () => {
+    this.props.onSubmit(this.state, () => {      
       window.location("/dash");
     });
   };
@@ -78,7 +84,7 @@ class SignUpPage extends Component {
               <Typography component="h1" variant="h5">
                 ثبت نام
               </Typography>
-              <form className={classes.form} noValidate>
+              <form onSubmit={e => this.handleSubmit(e)} className={classes.form} noValidate>
                 <Grid container spacing={2}>
                   <Grid item xs={12} sm={6}>                    
                     <TextField
@@ -89,7 +95,7 @@ class SignUpPage extends Component {
                       name="firstName"
                       label="نام"
                       type="firstName"
-                      onChange= {(event,newValue) => this.setState({firstName:newValue})}
+                      onChange={e => { this.changeFirstName(e); }}
                       id="firstName"
                     />
                     
@@ -97,13 +103,14 @@ class SignUpPage extends Component {
                   <Grid item xs={12} sm={6}>
                     <TextField
                       variant="outlined"
+                      margin="normal"
                       required
                       fullWidth
                       id="lastName"
                       label="نام خانوادگی"
                       name="lastName"
                       autoComplete="lname"
-                      onChange = {(event,newValue) => this.setState({lastName:newValue})}
+                      onChange={e => { this.changeLastName(e); }}
                     />
                   </Grid>
                   <Grid item xs={12}>
@@ -115,7 +122,7 @@ class SignUpPage extends Component {
                       label="آدرس ایمیل"
                       name="email"
                       autoComplete="email"
-                      onChange = {(event,newValue) => this.setState({email:newValue})}
+                      onChange={e => { this.changeEmail(e); }}
                     />
                   </Grid>
                   <Grid item xs={12}>
@@ -128,7 +135,7 @@ class SignUpPage extends Component {
                       type="password"
                       id="password"
                       autoComplete="current-password"
-                      onChange = {(event,newValue) => this.setState({password:newValue})}
+                      onChange={e => { this.changePassword(e); }}
                     />
                   </Grid>
                   <Grid item xs={12}>
@@ -140,7 +147,7 @@ class SignUpPage extends Component {
                       label="تکرار کلمه عبور"
                       type="password"
                       id="confirmpassword"
-                      onChange = {(event,newValue) => this.setState({confirmpassword:newValue})}
+                      onChange={e => { this.changeConfirmPassword(e); }}
                     />
                   </Grid>
                   <Grid item xs={12}>
@@ -153,12 +160,12 @@ class SignUpPage extends Component {
                   </Grid>
                 </Grid>
                 <Button
-                  //type="submit"
+                  type="submit"
                   fullWidth
                   variant="contained"
                   color="primary"
                   className={classes.submit}
-                  onClick={(event) => this.handleSubmit(event)}
+                  //onClick={(event) => this.handleSubmit(event)}
                 >
                   ثبت نام
                 </Button>
@@ -198,7 +205,4 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withStyles(styles)(SignUpPage));
+export default connect( mapStateToProps, mapDispatchToProps)(withStyles(styles)(SignUpPage));
