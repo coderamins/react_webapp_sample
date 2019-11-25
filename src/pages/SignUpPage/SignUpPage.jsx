@@ -14,35 +14,41 @@ import Container from "@material-ui/core/Container";
 import { create } from "jss";
 import rtl from "jss-rtl";
 import { StylesProvider, jssPreset, ThemeProvider } from "@material-ui/styles";
-import { makeStyles, createMuiTheme, withStyles} from "@material-ui/core/styles";
+import {
+  makeStyles,
+  createMuiTheme,
+  withStyles
+} from "@material-ui/core/styles";
 import { connect } from "react-redux";
 import { signup } from "../../apis/sessions";
 import { style } from "@material-ui/system";
+//import {required,email,password} from '../FormValidation';
+import validator from "react-validation";
 
 const styles = theme => ({
-    "@global": {
-        body: {
-          backgroundColor: theme.palette.common.white
-        }
-      },
-      paper: {
-        marginTop: theme.spacing(8),
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center"
-      },
-      avatar: {
-        margin: theme.spacing(1),
-        backgroundColor: theme.palette.secondary.main
-      },
-      form: {
-        width: "100%", // Fix IE 11 issue.
-        marginTop: theme.spacing(3)
-      },
-      submit: {
-        margin: theme.spacing(3, 0, 2)
-      }
-  });
+  "@global": {
+    body: {
+      backgroundColor: theme.palette.common.white
+    }
+  },
+  paper: {
+    marginTop: theme.spacing(8),
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center"
+  },
+  avatar: {
+    margin: theme.spacing(1),
+    backgroundColor: theme.palette.secondary.main
+  },
+  form: {
+    width: "100%", // Fix IE 11 issue.
+    marginTop: theme.spacing(3)
+  },
+  submit: {
+    margin: theme.spacing(3, 0, 2)
+  }
+});
 
 class SignUpPage extends Component {
   constructor(props) {
@@ -50,27 +56,51 @@ class SignUpPage extends Component {
     this.state = {
       firstName: "fds",
       lastName: "gfdg",
-      email:"ads",
-      password:"sss",
-      confirmpassword:"sss"
+      Email: "ads",
+      password: "sss",
+      confirmpassword: "sss",
+
+      emailError: ""
     };
   }
 
-  changeFirstName = e => { this.setState({ firstName: e.target.value }); };
-  changeLastName = e => { this.setState({ lastName: e.target.value }); };
-  changeEmail = e => { this.setState({ email: e.target.value }); };
-  changePassword = e => { this.setState({ password: e.target.value }); };
-  changeConfirmPassword = e => { this.setState({ confirmpassword: e.target.value }); };
+  email = e => {
+    this.setState({
+      emailError:
+        this.state.Email.length > 3
+          ? null
+          : "Email must be longer than 3 characters"
+    });
+    this.setState({ Email: e.target.value });
+  };
+
+  //changeConfirmPassword = e => { this.setState({ confirmpassword: e.target.value }); };
+
+  changeHandler = event => {
+    this.setState({ [event.target.name]: event.target.value });
+  };
 
   handleSubmit = e => {
     e.preventDefault();
-    this.props.onSubmit(this.state, () => {      
+    this.props.onSubmit(this.state, () => {
       window.location("/dash");
     });
   };
-  
+
   render() {
     const { classes } = this.props;
+
+    const required = value => {
+      if (!value.toString().trim().length) {
+        return false;
+      } else return false;
+    };
+
+    const email = value => {
+      if (!validator.isEmail(value)) {
+        return `${value} is not a valid email.`;
+      }
+    };
 
     return (
       <Container component="main" maxWidth="xs">
@@ -84,10 +114,15 @@ class SignUpPage extends Component {
               <Typography component="h1" variant="h5">
                 ثبت نام
               </Typography>
-              <form onSubmit={e => this.handleSubmit(e)} className={classes.form} noValidate>
+              <form
+                onSubmit={e => this.handleSubmit(e)}
+                className={classes.form}
+                noValidate
+              >
                 <Grid container spacing={2}>
-                  <Grid item xs={12} sm={6}>                    
+                  <Grid item xs={12} sm={6}>
                     <TextField
+                      error={required}
                       variant="outlined"
                       margin="normal"
                       required
@@ -95,10 +130,11 @@ class SignUpPage extends Component {
                       name="firstName"
                       label="نام"
                       type="firstName"
-                      onChange={e => { this.changeFirstName(e); }}
+                      //onChange={e => { this.changeFirstName(e); }}
+                      onChange={this.changeHandler}
                       id="firstName"
+                      helperText=""
                     />
-                    
                   </Grid>
                   <Grid item xs={12} sm={6}>
                     <TextField
@@ -110,7 +146,8 @@ class SignUpPage extends Component {
                       label="نام خانوادگی"
                       name="lastName"
                       autoComplete="lname"
-                      onChange={e => { this.changeLastName(e); }}
+                      //onChange={e => { this.changeLastName(e); }}
+                      onChange={this.changeHandler}
                     />
                   </Grid>
                   <Grid item xs={12}>
@@ -118,12 +155,17 @@ class SignUpPage extends Component {
                       variant="outlined"
                       required
                       fullWidth
-                      id="email"
+                      id="Email"
                       label="آدرس ایمیل"
-                      name="email"
-                      autoComplete="email"
-                      onChange={e => { this.changeEmail(e); }}
+                      name="Email"
+                      autoComplete="Email"
+                      validations={[required, email]}
+                      //onChange={e => { this.changeEmail(e); }}
+                      onChange={this.changeHandler}
                     />
+                    <div className="invalid-feedback">
+                      {this.state.emailError}
+                    </div>
                   </Grid>
                   <Grid item xs={12}>
                     <TextField
@@ -135,7 +177,8 @@ class SignUpPage extends Component {
                       type="password"
                       id="password"
                       autoComplete="current-password"
-                      onChange={e => { this.changePassword(e); }}
+                      //onChange={e => { this.changePassword(e); }}
+                      onChange={this.changeHandler}
                     />
                   </Grid>
                   <Grid item xs={12}>
@@ -147,7 +190,8 @@ class SignUpPage extends Component {
                       label="تکرار کلمه عبور"
                       type="password"
                       id="confirmpassword"
-                      onChange={e => { this.changeConfirmPassword(e); }}
+                      //onChange={e => { this.changeConfirmPassword(e); }}
+                      onChange={this.changeHandler}
                     />
                   </Grid>
                   <Grid item xs={12}>
@@ -205,4 +249,7 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default connect( mapStateToProps, mapDispatchToProps)(withStyles(styles)(SignUpPage));
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withStyles(styles)(SignUpPage));
