@@ -14,16 +14,12 @@ import Container from "@material-ui/core/Container";
 import { create } from "jss";
 import rtl from "jss-rtl";
 import { StylesProvider, jssPreset, ThemeProvider } from "@material-ui/styles";
-import {
-  makeStyles,
-  createMuiTheme,
-  withStyles
-} from "@material-ui/core/styles";
+import { makeStyles, createMuiTheme, withStyles} from "@material-ui/core/styles";
 import { connect } from "react-redux";
 import { signup } from "../../apis/sessions";
 import { style } from "@material-ui/system";
 //import {required,email,password} from '../FormValidation';
-import validator from "react-validation";
+//import validator from "react-validation";
 
 const styles = theme => ({
   "@global": {
@@ -54,6 +50,7 @@ class SignUpPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      validEmail: false,
       firstName: "fds",
       lastName: "gfdg",
       Email: "ads",
@@ -87,8 +84,29 @@ class SignUpPage extends Component {
     });
   };
 
+  validateEmail = (e) => {
+    const email = e.target.value;
+    if (!email ){//|| invalidEmail(email)) {
+      this.setState({
+        validEmail: true,
+      });
+    } else {
+      this.setState({
+        validEmail: false,
+      });
+    }
+  }
+
   render() {
-    const { classes } = this.props;
+    const { classes,validEmail,values,
+      touched,
+      errors,
+      dirty,
+      isSubmitting,
+      handleChange,
+      handleBlur,
+      handleSubmit,
+      handleReset, } = this.props;
 
     const required = value => {
       if (!value.toString().trim().length) {
@@ -96,11 +114,11 @@ class SignUpPage extends Component {
       } else return false;
     };
 
-    const email = value => {
-      if (!validator.isEmail(value)) {
-        return `${value} is not a valid email.`;
-      }
-    };
+  //  const email = value => {
+  //    if (!validator.isEmail(value)) {
+  //      return `${value} is not a valid email.`;
+  //    }
+  //  };
 
     return (
       <Container component="main" maxWidth="xs">
@@ -130,7 +148,6 @@ class SignUpPage extends Component {
                       name="firstName"
                       label="نام"
                       type="firstName"
-                      //onChange={e => { this.changeFirstName(e); }}
                       onChange={this.changeHandler}
                       id="firstName"
                       helperText={this.state.firstName === "" ? 'نام الزامی می باشد !' : ' '}
@@ -146,7 +163,8 @@ class SignUpPage extends Component {
                       label="نام خانوادگی"
                       name="lastName"
                       autoComplete="lname"
-                      //onChange={e => { this.changeLastName(e); }}
+                      error={this.state.lastName===""}
+                      helperText={this.state.lastName === "" ? 'نام خانوادگی الزامی می باشد !' : ' '}
                       onChange={this.changeHandler}
                     />
                   </Grid>
@@ -159,8 +177,13 @@ class SignUpPage extends Component {
                       label="آدرس ایمیل"
                       name="Email"
                       autoComplete="Email"
-                      validations={[required, email]}
-                      //onChange={e => { this.changeEmail(e); }}
+                      validations={[required]}
+                      //error={this.state.Email==="" || validEmail}
+                      //helperText={
+                      //  this.state.Email === "" ? ' ایمیل الزامی می باشد !' :
+                      //  validEmail  ? 'ایمیل وارد شده نامعتبر می باشد !': ' '
+                      //}
+                      helperText={(errors.Email && touched.Email) && errors.Email}
                       onChange={this.changeHandler}
                     />
                     <div className="invalid-feedback">
