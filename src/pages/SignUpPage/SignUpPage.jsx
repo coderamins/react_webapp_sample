@@ -122,7 +122,7 @@ class SignUpPage extends Component {
                 <Grid container spacing={2}>
                   <Grid item xs={12} sm={6}>
                     <TextField
-                      error={required}
+                      error={this.state.firstName===""}
                       variant="outlined"
                       margin="normal"
                       required
@@ -133,7 +133,7 @@ class SignUpPage extends Component {
                       //onChange={e => { this.changeFirstName(e); }}
                       onChange={this.changeHandler}
                       id="firstName"
-                      helperText=""
+                      helperText={this.state.firstName === "" ? 'نام الزامی می باشد !' : ' '}
                     />
                   </Grid>
                   <Grid item xs={12} sm={6}>
